@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: padook-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      # Puedes añadir aquí tus variables (o usar .env)
+    depends_on:
+      - db
+      - rabbitmq
+    command: npm run start:dev
+
+  db:
+    image: postgres:15
+    container_name: padook-db
+    restart: always
+    environment:
+      POSTGRES_DB: padook
+      POSTGRES_USER: padook
+      POSTGRES_PASSWORD: padook
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: padook-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672" # UI web de RabbitMQ en http://localhost:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: padook
+      RABBITMQ_DEFAULT_PASS: padook
+
+volumes:
+  dbdata:

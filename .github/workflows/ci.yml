@@ -1,17 +1,11 @@
 name: CI
 
 on:
-   branches:
-      - main
-      - develop
-      - feature/*
-      - bugfix/*
+  push:
+    branches: [ "**" ]
   pull_request:
-    branches:
-      - main
-      - develop
-      - feature/*
-      - bugfix/*
+    branches: [ "**" ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
